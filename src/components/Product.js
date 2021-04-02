@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import Swal from 'sweetalert2';
 
 
 // Redux
@@ -15,10 +16,22 @@ function Product({ product }) {
   const confirmDeleteProduct = id => {
     
     // ask the user
-
-    // move it to the action
-    dispatch(deleteProductAction(id));
-  }
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You cant recover a deleted product",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete!!',
+        cancelButtonText: 'Cancel'
+    }).then((result) => {
+        if (result.value) {
+            // move it to the client
+            dispatch( deleteProductAction(id) );
+        }
+    });
+}
 
   return (
     <tr>
