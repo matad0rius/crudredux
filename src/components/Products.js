@@ -12,6 +12,7 @@ function Products() {
     // check api
     const loadProducts = () => dispatch(getProductsActions());
     loadProducts();
+    // eslint-disable-next-line
   }, []);
 
   // get state
