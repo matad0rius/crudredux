@@ -1,49 +1,62 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import Swal from 'sweetalert2';
-
+import { Link, useHistory } from "react-router-dom";
+import Swal from "sweetalert2";
 
 // Redux
-import { useDispatch } from 'react-redux';
-import { deleteProductAction } from '../actions/createNewProductAction';
+import { useDispatch } from "react-redux";
+import { deleteProductAction, getProductEdit } from "../actions/createNewProductAction";
 
 function Product({ product }) {
   const { name, price, id } = product;
 
   const dispatch = useDispatch();
+  const history = useHistory();
 
   // Confirm if you want to delete it
-  const confirmDeleteProduct = id => {
-    
+  const confirmDeleteProduct = (id) => {
     // ask the user
     Swal.fire({
-        title: 'Are you sure?',
-        text: "You cant recover a deleted product",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete!!',
-        cancelButtonText: 'Cancel'
+      title: "Are you sure?",
+      text: "You cant recover a deleted product",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete!!",
+      cancelButtonText: "Cancel",
     }).then((result) => {
-        if (result.value) {
-            // move it to the client
-            dispatch( deleteProductAction(id) );
-        }
+      if (result.value) {
+        // move it to the client
+        dispatch(deleteProductAction(id));
+      }
     });
-}
+  };
+
+  // function than redirect
+  const redirectEdition = (product) => {
+    dispatch(getProductEdit(product));
+    history.push(`/products/edit/${product.id}`);
+  };
 
   return (
     <tr>
       <td>{name}</td>
       <td>
-    <span className="font-weight-bold">$ {price}</span>
+        <span className="font-weight-bold">$ {price}</span>
       </td>
       <td className="acciones">
-        <Link to={`/products/edit/${id}`} className="btn btn-primary mr-2">
+        <button
+          type="button"
+          onClick={() => redirectEdition(product)}
+          className="btn btn-primary mr-2"
+        >
           Edit
-        </Link>
-        <button type="button" className="btn btn-danger" onClick={() => confirmDeleteProduct(id)}>
+        </button>
+        <button
+          type="button"
+          className="btn btn-danger"
+          onClick={() => confirmDeleteProduct(id)}
+        >
           Delete
         </button>
       </td>
