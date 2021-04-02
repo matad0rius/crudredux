@@ -10,12 +10,12 @@ function Products() {
 
   useEffect(() => {
     // check api
-    const loadProducts = () => dispatch(getProductsActions);
+    const loadProducts = () => dispatch(getProductsActions());
     loadProducts();
   }, []);
 
   // get state
-  const products = useSelector((state) => state.products);
+  const products = useSelector((state) => state.products.products);
   const error = useSelector((state) => state.products.error);
   const loading = useSelector((state) => state.products.loading);
 
@@ -42,9 +42,9 @@ function Products() {
         <tbody>
           {products.length === 0
             ? "There is not products"
-            : products.map((product) => (
+            : (products.map(product => (
                 <Product key={product.id} product={product} />
-              ))}
+              )))}
         </tbody>
       </table>
     </Fragment>
